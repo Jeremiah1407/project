@@ -1,14 +1,17 @@
 <?php
+// Start the session
 session_start();
 
 // Include database connection
 require('./db_connect.php');
 
+// Initialize error and success messages
 $error = "";
 $success = "";
 
 // Handle signup form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get the username and passwords from the POST request
     $username = $_POST['username'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
@@ -24,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $result = $stmt->get_result();
 
+        // If username exists, set error message
         if ($result->num_rows > 0) {
             $error = "Username already exists. Please choose a different one.";
         } else {
@@ -32,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $username, $password);
 
+            // Check if the insertion was successful
             if ($stmt->execute()) {
                 $success = "Signup successful! You can now log in.";
             } else {
@@ -39,10 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        // Close the statement
         $stmt->close();
     }
 }
 
+// Close the database connection
 $conn->close();
 ?>
 
@@ -53,12 +60,15 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GCTU Library | Signup</title>
+    <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <!-- Include custom styles -->
     <link rel="stylesheet" href="./assets/styles.css">
 </head>
 
 <body>
     <div class="bg-white p-5 d-flex rounded-3 container-fluid d-flex justify-content-center align-items-center flex-column h-100 col-12 col-md-7 col-lg-5 col-xl-3">
+        <!-- Include logo -->
         <?php include('./partials/logo.php') ?>
         <p class="my-subtitle">Create a new account</p>
 

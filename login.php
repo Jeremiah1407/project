@@ -1,14 +1,17 @@
 <?php
+// Start the session
 session_start();
 
 // Include database connection
 require('./db_connect.php');
 
+// Initialize error and success messages
 $error = "";
 $success = "";
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get the username and password from the POST request
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -19,21 +22,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // Check if the user exists
     if ($result->num_rows > 0) {
+        // Fetch user data
         $user = $result->fetch_assoc();
+        // Verify the password
         if ($user['password'] === $password) {
+            // Set success message and store username in session
             $success = "Login successful! Welcome, " . htmlspecialchars($username) . ".";
             $_SESSION['username'] = $username;
         } else {
+            // Set error message for invalid password
             $error = "Invalid password.";
         }
     } else {
+        // Set error message for no user found
         $error = "No user found with that username.";
     }
 
+    // Close the statement
     $stmt->close();
 }
 
+// Close the database connection
 $conn->close();
 ?>
 
@@ -44,12 +55,15 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GCTU Library | Login</title>
+    <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <!-- Include custom styles -->
     <link rel="stylesheet" href="./assets/styles.css">
 </head>
 
 <body>
     <div class="bg-white p-5 d-flex rounded-3 container-fluid d-flex justify-content-center align-items-center flex-column h-100 col-12 col-md-7 col-lg-5 col-xl-3">
+        <!-- Include logo -->
         <?php include('./partials/logo.php') ?>
         <p class="my-subtitle">Log into your account</p>
 

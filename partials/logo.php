@@ -1,4 +1,7 @@
+<!-- Container for centering the logo -->
 <div class="d-flex justify-content-center align-items-center my-3">
-    <div style="width: 100px; height: 100px;" class="rounded-circle bg-info"></div>
+    <!-- Logo placeholder with a circular background -->
+    <img src="./assets/logo.jpg" alt="Library Logo" class="rounded-circle" style="width: 200px; height: 200px;">
 </div>
-<h1 class="my-title text-primary">GCTU Library</h1>
+<!-- Title of the library -->
+<h1 class="my-title text-primary text-center">GCTU Library</h1>
